@@ -16,9 +16,10 @@ public class MenuSystem {
         System.out.println("\n╔═══════════ TRANSACTION MENU ════════════╗");
         System.out.println("║ 1. 💰 Add Income                        ║");
         System.out.println("║ 2. 💸 Add Expense                       ║");
-        System.out.println("║ 3. ❌ Remove Transaction                ║");
-        System.out.println("║ 4. 🔍 Find Transaction by ID            ║");
-        System.out.println("║ 5. ⬅️  Back to Main Menu                ║");
+        System.out.println("║ 3. 🔄 Add Recurring Expense             ║");
+        System.out.println("║ 4. ❌ Remove Transaction                ║");
+        System.out.println("║ 5. 🔍 Find Transaction by ID            ║");
+        System.out.println("║ 6. ⬅️  Back to Main Menu                ║");
         System.out.println("╚════════════════════════════════════════╝");
     }
     
@@ -30,7 +31,8 @@ public class MenuSystem {
         System.out.println("║ 4. 📋 Recent Transactions               ║");
         System.out.println("║ 5. 📆 Transactions by Date Range        ║");
         System.out.println("║ 6. 📈 Yearly Overview                   ║");
-        System.out.println("║ 7. ⬅️  Back to Main Menu                ║");
+        System.out.println("║ 7. 🔄 Recurring Expenses                ║");
+        System.out.println("║ 8. ⬅️  Back to Main Menu                ║");
         System.out.println("╚════════════════════════════════════════╝");
     }
     
@@ -41,6 +43,21 @@ public class MenuSystem {
         System.out.println("║ 3. 📊 Year-to-Date Summary               ║");
         System.out.println("║ 4. 💡 Spending Insights                 ║");
         System.out.println("║ 5. ⬅️  Back to Main Menu                ║");
+        System.out.println("╚════════════════════════════════════════╝");
+    }
+    
+    public static void displayRecurringExpenseMenu() {
+        System.out.println("\n╔═══════════ RECURRING EXPENSE MENU ═════════════╗");
+        System.out.println("║ 1. 🔄 Add Recurring Expense             ║");
+        System.out.println("║ 2. 📋 View All Recurring Expenses       ║");
+        System.out.println("║ 3. ✅ View Active Recurring Expenses    ║");
+        System.out.println("║ 4. 📅 View Upcoming Recurring Expenses  ║");
+        System.out.println("║ 5. ❌ Remove Recurring Expense          ║");
+        System.out.println("║ 6. 🔄 Toggle Recurring Expense Status   ║");
+        System.out.println("║ 7. ⚡ Process Due Recurring Expenses    ║");
+        System.out.println("║ 8. ⚠️  Process Overdue Recurring Expenses ║");
+        System.out.println("║ 9. 📊 Recurring Expense Summary         ║");
+        System.out.println("║ 10. ⬅️  Back to Main Menu                ║");
         System.out.println("╚════════════════════════════════════════╝");
     }
     

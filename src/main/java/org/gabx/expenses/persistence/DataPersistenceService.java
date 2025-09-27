@@ -3,6 +3,7 @@ package org.gabx.expenses.persistence;
 import org.gabx.expenses.transactions.Transaction;
 import org.gabx.expenses.transactions.Income;
 import org.gabx.expenses.transactions.Expense;
+import org.gabx.expenses.transactions.RecurringExpense;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -17,11 +18,13 @@ import java.util.HashMap;
 public class DataPersistenceService {
     private static final String DATA_FILE = "transactions.json";
     private static final String CATEGORIES_FILE = "categories.json";
+    private static final String RECURRING_FILE = "recurring_expenses.json";
     private static final String DATA_DIRECTORY = System.getProperty("user.home") + File.separator + "bin" + File.separator + ".expense-tracker";
     
     private final ObjectMapper objectMapper;
     private final File dataFile;
     private final File categoriesFile;
+    private final File recurringFile;
     private final File dataDir;
     
     public DataPersistenceService() {
@@ -36,10 +39,12 @@ public class DataPersistenceService {
         
         this.dataFile = new File(dataDir, DATA_FILE);
         this.categoriesFile = new File(dataDir, CATEGORIES_FILE);
+        this.recurringFile = new File(dataDir, RECURRING_FILE);
         
         // Ensure files exist
         createFileIfNotExists(dataFile);
         createFileIfNotExists(categoriesFile);
+        createFileIfNotExists(recurringFile);
     }
     
     private void createFileIfNotExists(File file) {
@@ -54,6 +59,8 @@ public class DataPersistenceService {
                     defaultCategories.put("income", List.of("Salary", "Freelance", "Investment", "Gift", "Allowance"));
                     defaultCategories.put("expense", List.of("Groceries", "Transport", "Entertainment", "Utilities", "Healthcare", "Clothing", "Restaurants", "Education"));
                     objectMapper.writeValue(file, defaultCategories);
+                } else if (file.equals(recurringFile)) {
+                    objectMapper.writeValue(file, new ArrayList<RecurringExpenseData>());
                 }
             }
         } catch (IOException e) {
@@ -84,7 +91,11 @@ public class DataPersistenceService {
                 if ("INCOME".equals(data.transactionType)) {
                     transaction = new Income();
                 } else {
-                    transaction = new Expense();
+                    Expense expense = new Expense();
+                    if (data.originalRecurringId != null) {
+                        expense.setOriginalRecurringId(data.originalRecurringId);
+                    }
+                    transaction = expense;
                 }
                 transaction.setId(data.id);
                 transaction.setAmount(data.amount);
@@ -129,6 +140,49 @@ public class DataPersistenceService {
         }
     }
     
+    public void saveRecurringExpenses(List<RecurringExpense> recurringExpenses) {
+        try {
+            List<RecurringExpenseData> dataList = recurringExpenses.stream()
+                .map(RecurringExpenseData::new)
+                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+            objectMapper.writeValue(recurringFile, dataList);
+        } catch (IOException e) {
+            System.err.println("Error saving recurring expenses: " + e.getMessage());
+        }
+    }
+    
+    public List<RecurringExpense> loadRecurringExpenses() {
+        try {
+            if (recurringFile.length() == 0) {
+                return new ArrayList<>();
+            }
+            
+            CollectionType listType = objectMapper.getTypeFactory().constructCollectionType(List.class, RecurringExpenseData.class);
+            List<RecurringExpenseData> recurringDataList = objectMapper.readValue(recurringFile, listType);
+            
+            List<RecurringExpense> recurringExpenses = new ArrayList<>();
+            for (RecurringExpenseData data : recurringDataList) {
+                RecurringExpense recurringExpense = new RecurringExpense();
+                recurringExpense.setId(data.id);
+                recurringExpense.setAmount(data.amount);
+                recurringExpense.setDate(data.date);
+                recurringExpense.setDescription(data.description);
+                recurringExpense.setCategory(data.category);
+                recurringExpense.setFrequency(data.frequency);
+                recurringExpense.setNextDueDate(data.nextDueDate);
+                recurringExpense.setStartDate(data.startDate);
+                recurringExpense.setActive(data.isActive);
+                recurringExpense.setOriginalRecurringId(data.originalRecurringId);
+                recurringExpenses.add(recurringExpense);
+            }
+            
+            return recurringExpenses;
+        } catch (IOException e) {
+            System.err.println("Error loading recurring expenses: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+    
     public void createBackup() {
         try {
             String timestamp = java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
@@ -158,6 +212,7 @@ public class DataPersistenceService {
         public String description;
         public String category;
         public String transactionType;
+        public String originalRecurringId;
         
         public TransactionData() {}
         
@@ -168,6 +223,40 @@ public class DataPersistenceService {
             this.description = transaction.getDescription();
             this.category = transaction.getCategory();
             this.transactionType = transaction.getTransactionType();
+            if (transaction instanceof Expense) {
+                this.originalRecurringId = ((Expense) transaction).getOriginalRecurringId();
+            }
+        }
+    }
+    
+    // Helper class for recurring expense JSON serialization
+    public static class RecurringExpenseData {
+        public String id;
+        public double amount;
+        public java.time.LocalDate date;
+        public String description;
+        public String category;
+        public String transactionType;
+        public RecurringExpense.Frequency frequency;
+        public java.time.LocalDate nextDueDate;
+        public java.time.LocalDate startDate;
+        public boolean isActive;
+        public String originalRecurringId;
+        
+        public RecurringExpenseData() {}
+        
+        public RecurringExpenseData(RecurringExpense recurringExpense) {
+            this.id = recurringExpense.getId();
+            this.amount = recurringExpense.getAmount();
+            this.date = recurringExpense.getDate();
+            this.description = recurringExpense.getDescription();
+            this.category = recurringExpense.getCategory();
+            this.transactionType = recurringExpense.getTransactionType();
+            this.frequency = recurringExpense.getFrequency();
+            this.nextDueDate = recurringExpense.getNextDueDate();
+            this.startDate = recurringExpense.getStartDate();
+            this.isActive = recurringExpense.isActive();
+            this.originalRecurringId = recurringExpense.getOriginalRecurringId();
         }
     }
 }

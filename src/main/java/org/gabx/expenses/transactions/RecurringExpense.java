@@ -1,7 +1,6 @@
 package org.gabx.expenses.transactions;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +9,7 @@ public class RecurringExpense extends Expense {
     public enum Frequency {
         DAILY("Daily"),
         WEEKLY("Weekly"), 
+        FOUR_WEEKS("4 Weeks"),
         MONTHLY("Monthly"),
         QUARTERLY("Quarterly"),
         YEARLY("Yearly");

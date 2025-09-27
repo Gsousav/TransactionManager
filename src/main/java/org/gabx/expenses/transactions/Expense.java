@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 public class Expense extends Transaction {
     private String expenseCategory;
+    private String originalRecurringId; // ID of the recurring expense that generated this expense
     private static List<String> expenseCategories = new ArrayList<>(
         Arrays.asList("Groceries", "Transport", "Entertainment", "Utilities", 
                      "Healthcare", "Clothing", "Restaurants", "Education")
@@ -48,5 +49,14 @@ public class Expense extends Transaction {
     
     public static void setCategories(List<String> categories) {
         expenseCategories = new ArrayList<>(categories);
-    } 
+    }
+    
+    // Getter and setter for originalRecurringId
+    public String getOriginalRecurringId() {
+        return originalRecurringId;
+    }
+    
+    public void setOriginalRecurringId(String originalRecurringId) {
+        this.originalRecurringId = originalRecurringId;
+    }
 }

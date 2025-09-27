@@ -9,7 +9,6 @@ public class RecurringExpense extends Expense {
     public enum Frequency {
         DAILY("Daily"),
         WEEKLY("Weekly"), 
-        FOUR_WEEKS("4 Weeks"),
         MONTHLY("Monthly"),
         QUARTERLY("Quarterly"),
         YEARLY("Yearly");

@@ -1,5 +1,4 @@
 package org.gabx.expenses.transactions;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,5 +40,13 @@ public class Expense extends Transaction {
         } else {
             System.out.println(newCategory + " is already an expense category!");
         }
+    }
+    
+    public static List<String> getCategories() {
+        return new ArrayList<>(expenseCategories);
+    }
+    
+    public static void setCategories(List<String> categories) {
+        expenseCategories = new ArrayList<>(categories);
     } 
 }

@@ -39,4 +39,12 @@ public class Income extends Transaction {
             System.out.println(newCategory + " is already an income category!");
         }
     }
+    
+    public static List<String> getCategories() {
+        return new ArrayList<>(incomeCategories);
+    }
+    
+    public static void setCategories(List<String> categories) {
+        incomeCategories = new ArrayList<>(categories);
+    }
 }

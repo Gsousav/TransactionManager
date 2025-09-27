@@ -1,5 +1,7 @@
+org/gabx/expenses/persistence/DataPersistenceService.class
+org/gabx/expenses/transactions/Expense.class
+org/gabx/expenses/persistence/DataPersistenceService$TransactionData.class
 org/gabx/expenses/App.class
 org/gabx/expenses/manager/TransactionManager.class
 org/gabx/expenses/transactions/Income.class
-org/gabx/expenses/transactions/Expense.class
 org/gabx/expenses/transactions/Transaction.class

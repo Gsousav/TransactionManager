@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-21-openjdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/gabx/dev/apps/Expenses/target/surefire/surefirebooter-20250927221516194_3.jar /home/gabx/dev/apps/Expenses/target/surefire 2025-09-27T22-15-16_146-jvmRun1 surefire-20250927221516194_1tmp surefire_0-20250927221516194_2tmp"/>
+    <property name="sun.java.command" value="/home/gabx/dev/apps/Expenses/target/surefire/surefirebooter-20250927222029942_3.jar /home/gabx/dev/apps/Expenses/target/surefire 2025-09-27T22-20-29_902-jvmRun1 surefire-20250927222029942_1tmp surefire_0-20250927222029942_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/gabx/dev/apps/Expenses/target/test-classes:/home/gabx/dev/apps/Expenses/target/classes:/home/gabx/.m2/repository/org/junit/jupiter/junit-jupiter/5.9.2/junit-jupiter-5.9.2.jar:/home/gabx/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.9.2/junit-jupiter-api-5.9.2.jar:/home/gabx/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/home/gabx/.m2/repository/org/junit/platform/junit-platform-commons/1.9.2/junit-platform-commons-1.9.2.jar:/home/gabx/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/gabx/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.9.2/junit-jupiter-params-5.9.2.jar:/home/gabx/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.9.2/junit-jupiter-engine-5.9.2.jar:/home/gabx/.m2/repository/org/junit/platform/junit-platform-engine/1.9.2/junit-platform-engine-1.9.2.jar:/home/gabx/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.2/jackson-databind-2.15.2.jar:/home/gabx/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.2/jackson-annotations-2.15.2.jar:/home/gabx/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.2/jackson-core-2.15.2.jar:/home/gabx/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.15.2/jackson-datatype-jsr310-2.15.2.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -27,7 +27,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
-    <property name="surefire.real.class.path" value="/home/gabx/dev/apps/Expenses/target/surefire/surefirebooter-20250927221516194_3.jar"/>
+    <property name="surefire.real.class.path" value="/home/gabx/dev/apps/Expenses/target/surefire/surefirebooter-20250927222029942_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="21.0.8+9-Ubuntu-0ubuntu124.04.1"/>
     <property name="user.name" value="gabx"/>
@@ -53,6 +53,6 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="testBasicFunctionality" classname="org.gabx.expenses.AppTest" time="0.014"/>
-  <testcase name="testApp" classname="org.gabx.expenses.AppTest" time="0.001"/>
+  <testcase name="testBasicFunctionality" classname="org.gabx.expenses.AppTest" time="0.015"/>
+  <testcase name="testApp" classname="org.gabx.expenses.AppTest" time="0"/>
 </testsuite>

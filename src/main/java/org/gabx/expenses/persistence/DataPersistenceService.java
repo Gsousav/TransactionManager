@@ -17,7 +17,7 @@ import java.util.HashMap;
 public class DataPersistenceService {
     private static final String DATA_FILE = "transactions.json";
     private static final String CATEGORIES_FILE = "categories.json";
-    private static final String DATA_DIRECTORY = System.getProperty("user.home") + File.separator + ".expense-tracker";
+    private static final String DATA_DIRECTORY = System.getProperty("user.home") + File.separator + "bin" + File.separator + ".expense-tracker";
     
     private final ObjectMapper objectMapper;
     private final File dataFile;

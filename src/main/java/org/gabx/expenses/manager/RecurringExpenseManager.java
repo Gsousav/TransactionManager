@@ -222,6 +222,8 @@ public class RecurringExpenseManager {
                 return date.plusDays(1);
             case WEEKLY:
                 return date.plusWeeks(1);
+            case FOUR_WEEKLY:
+                return date.plusWeeks(4);
             case MONTHLY:
                 return date.plusMonths(1);
             case QUARTERLY:

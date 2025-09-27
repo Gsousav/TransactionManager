@@ -8,7 +8,8 @@ import java.util.Arrays;
 public class RecurringExpense extends Expense {
     public enum Frequency {
         DAILY("Daily"),
-        WEEKLY("Weekly"), 
+        WEEKLY("Weekly"),
+        FOUR_WEEKLY("4-Weekly"), 
         MONTHLY("Monthly"),
         QUARTERLY("Quarterly"),
         YEARLY("Yearly");
@@ -106,6 +107,9 @@ public class RecurringExpense extends Expense {
             case WEEKLY:
                 nextDueDate = current.plusWeeks(1);
                 break;
+            case FOUR_WEEKLY:
+                nextDueDate = current.plusWeeks(4);
+                break;
             case MONTHLY:
                 nextDueDate = current.plusMonths(1);
                 break;
@@ -161,6 +165,8 @@ public class RecurringExpense extends Expense {
                 return date.plusDays(1);
             case WEEKLY:
                 return date.plusWeeks(1);
+            case FOUR_WEEKLY:
+                return date.plusWeeks(4);
             case MONTHLY:
                 return date.plusMonths(1);
             case QUARTERLY:

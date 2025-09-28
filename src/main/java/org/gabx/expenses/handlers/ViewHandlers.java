@@ -20,7 +20,7 @@ public class ViewHandlers {
     }
     
     public void viewMonthlySummary() {
-        System.out.println("\n📅 === MONTHLY SUMMARY ===");
+        DisplayUtils.printCenteredSection("MONTHLY SUMMARY");
         
         int month = UserInputHandler.getIntInput("📅 Enter month (1-12): ");
         int year = UserInputHandler.getIntInput("📅 Enter year: ");
@@ -36,14 +36,16 @@ public class ViewHandlers {
         
         String monthName = YearMonth.of(year, month).format(DateTimeFormatter.ofPattern("MMMM yyyy"));
         
-        System.out.println("\n╔═══════════════════════════════════════╗");
-        System.out.printf("║           %s            ║%n", DisplayUtils.centerText(monthName, 25));
-        System.out.println("╠═══════════════════════════════════════╣");
-        System.out.printf("║ 💰 Total Income:     $%,10.2f     ║%n", totalIncome);
-        System.out.printf("║ 💸 Total Expenses:   $%,10.2f     ║%n", totalExpenses);
-        System.out.println("╠═══════════════════════════════════════╣");
-        System.out.printf("║ 💹 Net Balance:      $%,10.2f     ║%n", balance);
-        System.out.println("╚═══════════════════════════════════════╝");
+        // Create monthly summary box
+        int maxWidth = Math.max(monthName.length() + 4, 50);
+        System.out.println("\n╔" + "═".repeat(maxWidth - 2) + "╗");
+        System.out.println("║" + DisplayUtils.centerText(monthName, maxWidth - 2) + "║");
+        System.out.println("╠" + "═".repeat(maxWidth - 2) + "╣");
+        System.out.printf("║ 💰 Total Income:      $%,15.2f ║%n", totalIncome);
+        System.out.printf("║ 💸 Total Expenses:    $%,15.2f ║%n", totalExpenses);
+        System.out.println("╠" + "═".repeat(maxWidth - 2) + "╣");
+        System.out.printf("║ 💹 Net Balance:       $%,15.2f ║%n", balance);
+        System.out.println("╚" + "═".repeat(maxWidth - 2) + "╝");
         
         if (balance > 0) {
             System.out.println("✅ You saved money this month! 🎉");
@@ -55,7 +57,7 @@ public class ViewHandlers {
     }
     
     public void viewIncomeByCategory() {
-        System.out.println("\n💰 === INCOME BY CATEGORY ===");
+        DisplayUtils.printCenteredSection("INCOME BY CATEGORY");
         
         int month = UserInputHandler.getIntInput("📅 Enter month (1-12): ");
         int year = UserInputHandler.getIntInput("📅 Enter year: ");
@@ -69,19 +71,19 @@ public class ViewHandlers {
         
         String monthName = YearMonth.of(year, month).format(DateTimeFormatter.ofPattern("MMMM yyyy"));
         System.out.printf("%n🏷️ Income Categories - %s:%n", monthName);
-        System.out.println("═".repeat(40));
+        System.out.println("═".repeat(45));
         
         double total = 0;
         for (Map.Entry<String, Double> entry : incomeByCategory.entrySet()) {
-            System.out.printf("💰 %-20s $%,10.2f%n", entry.getKey(), entry.getValue());
+            System.out.printf("💰 %-25s $%,10.2f%n", entry.getKey(), entry.getValue());
             total += entry.getValue();
         }
-        System.out.println("═".repeat(40));
-        System.out.printf("💹 %-20s $%,10.2f%n", "TOTAL INCOME", total);
+        System.out.println("═".repeat(45));
+        System.out.printf("💹 %-25s $%,10.2f%n", "TOTAL INCOME", total);
     }
     
     public void viewExpensesByCategory() {
-        System.out.println("\n💸 === EXPENSES BY CATEGORY ===");
+        DisplayUtils.printCenteredSection("EXPENSES BY CATEGORY");
         
         int month = UserInputHandler.getIntInput("📅 Enter month (1-12): ");
         int year = UserInputHandler.getIntInput("📅 Enter year: ");
@@ -95,19 +97,19 @@ public class ViewHandlers {
         
         String monthName = YearMonth.of(year, month).format(DateTimeFormatter.ofPattern("MMMM yyyy"));
         System.out.printf("%n🏷️ Expense Categories - %s:%n", monthName);
-        System.out.println("═".repeat(40));
+        System.out.println("═".repeat(45));
         
         double total = 0;
         for (Map.Entry<String, Double> entry : expensesByCategory.entrySet()) {
-            System.out.printf("💸 %-20s $%,10.2f%n", entry.getKey(), entry.getValue());
+            System.out.printf("💸 %-25s $%,10.2f%n", entry.getKey(), entry.getValue());
             total += entry.getValue();
         }
-        System.out.println("═".repeat(40));
-        System.out.printf("💹 %-20s $%,10.2f%n", "TOTAL EXPENSES", total);
+        System.out.println("═".repeat(45));
+        System.out.printf("💹 %-25s $%,10.2f%n", "TOTAL EXPENSES", total);
     }
     
     public void viewRecentTransactions() {
-        System.out.println("\n📋 === RECENT TRANSACTIONS ===");
+        DisplayUtils.printCenteredSection("RECENT TRANSACTIONS");
         
         int count = UserInputHandler.getIntInput("📊 How many recent transactions to show? (default 10): ");
         if (count <= 0) count = 10;
@@ -120,9 +122,9 @@ public class ViewHandlers {
         }
         
         System.out.printf("%n📋 Last %d transactions:%n", recent.size());
-        System.out.println("═".repeat(80));
+        System.out.println("═".repeat(85));
         System.out.printf("%-12s %-15s %-25s %-10s %-10s%n", "Date", "Type", "Description", "Amount", "Category");
-        System.out.println("═".repeat(80));
+        System.out.println("═".repeat(85));
         
         for (Transaction t : recent) {
             String type = t instanceof Income ? "💰 Income" : "💸 Expense";
@@ -136,7 +138,7 @@ public class ViewHandlers {
     }
     
     public void viewTransactionsByDateRange() {
-        System.out.println("\n📆 === TRANSACTIONS BY DATE RANGE ===");
+        DisplayUtils.printCenteredSection("TRANSACTIONS BY DATE RANGE");
         
         LocalDate startDate = UserInputHandler.getDateInput("📅 Enter start date (yyyy-MM-dd): ");
         LocalDate endDate = UserInputHandler.getDateInput("📅 Enter end date (yyyy-MM-dd): ");
@@ -183,7 +185,7 @@ public class ViewHandlers {
     }
     
     public void viewYearlyOverview() {
-        System.out.println("\n📈 === YEARLY OVERVIEW ===");
+        DisplayUtils.printCenteredSection("YEARLY OVERVIEW");
         
         int year = UserInputHandler.getIntInput("📅 Enter year: ");
         
@@ -191,14 +193,17 @@ public class ViewHandlers {
         double totalExpenses = transactionManager.getTotalExpensesForYear(year);
         double balance = totalIncome - totalExpenses;
         
-        System.out.println("\n╔══════════════════════════════════════════╗");
-        System.out.printf("║              YEAR %d SUMMARY            ║%n", year);
-        System.out.println("╠══════════════════════════════════════════╣");
+        // Create yearly summary box
+        String yearTitle = "YEAR " + year + " SUMMARY";
+        int maxWidth = Math.max(yearTitle.length() + 4, 50);
+        System.out.println("\n╔" + "═".repeat(maxWidth - 2) + "╗");
+        System.out.println("║" + DisplayUtils.centerText(yearTitle, maxWidth - 2) + "║");
+        System.out.println("╠" + "═".repeat(maxWidth - 2) + "╣");
         System.out.printf("║ 💰 Total Income:      $%,15.2f ║%n", totalIncome);
         System.out.printf("║ 💸 Total Expenses:    $%,15.2f ║%n", totalExpenses);
-        System.out.println("╠══════════════════════════════════════════╣");
+        System.out.println("╠" + "═".repeat(maxWidth - 2) + "╣");
         System.out.printf("║ 💹 Net Savings:       $%,15.2f ║%n", balance);
-        System.out.println("╚══════════════════════════════════════════╝");
+        System.out.println("╚" + "═".repeat(maxWidth - 2) + "╝");
         
         // Monthly breakdown
         Map<Integer, Double> monthlyIncome = transactionManager.getMonthlyIncome(year);
@@ -207,7 +212,7 @@ public class ViewHandlers {
         if (!monthlyIncome.isEmpty() || !monthlyExpenses.isEmpty()) {
             System.out.println("\n📊 Monthly Breakdown:");
             System.out.println("Month      Income      Expenses     Balance");
-            System.out.println("════════════════════════════════════════════");
+            System.out.println("══════════════════════════════════════════════");
             
             for (int month = 1; month <= 12; month++) {
                 double income = monthlyIncome.getOrDefault(month, 0.0);
@@ -224,7 +229,7 @@ public class ViewHandlers {
     }
     
     public void monthlyTrendAnalysis() {
-        System.out.println("\n📈 === MONTHLY TREND ANALYSIS ===");
+        DisplayUtils.printCenteredSection("MONTHLY TREND ANALYSIS");
         
         int year = UserInputHandler.getIntInput("📅 Enter year for analysis: ");
         
@@ -237,14 +242,14 @@ public class ViewHandlers {
         }
         
         System.out.printf("\n📊 %d Monthly Trends:%n", year);
-        System.out.println("═".repeat(60));
+        System.out.println("═".repeat(65));
         
         double avgIncome = monthlyIncome.values().stream().mapToDouble(Double::doubleValue).average().orElse(0);
         double avgExpenses = monthlyExpenses.values().stream().mapToDouble(Double::doubleValue).average().orElse(0);
         
-        System.out.printf("📊 Average Monthly Income:  $%,10.2f%n", avgIncome);
-        System.out.printf("📊 Average Monthly Expenses: $%,10.2f%n", avgExpenses);
-        System.out.printf("📊 Average Monthly Savings:  $%,10.2f%n", avgIncome - avgExpenses);
+        System.out.printf("📊 Average Monthly Income:  $%,12.2f%n", avgIncome);
+        System.out.printf("📊 Average Monthly Expenses: $%,12.2f%n", avgExpenses);
+        System.out.printf("📊 Average Monthly Savings:  $%,12.2f%n", avgIncome - avgExpenses);
         
         // Find best and worst months
         if (!monthlyIncome.isEmpty()) {
@@ -269,7 +274,7 @@ public class ViewHandlers {
     }
     
     public void categorySpendingAnalysis() {
-        System.out.println("\n💹 === CATEGORY SPENDING ANALYSIS ===");
+        DisplayUtils.printCenteredSection("CATEGORY SPENDING ANALYSIS");
         
         int month = UserInputHandler.getIntInput("📅 Enter month (1-12): ");
         int year = UserInputHandler.getIntInput("📅 Enter year: ");
@@ -285,22 +290,22 @@ public class ViewHandlers {
         double total = expenses.values().stream().mapToDouble(Double::doubleValue).sum();
         
         System.out.printf("%n💹 Spending Analysis - %s:%n", monthName);
-        System.out.println("═".repeat(50));
+        System.out.println("═".repeat(55));
         
         expenses.entrySet().stream()
             .sorted(Map.Entry.<String, Double>comparingByValue().reversed())
             .forEach(entry -> {
                 double percentage = (entry.getValue() / total) * 100;
-                System.out.printf("💸 %-20s $%,8.2f (%4.1f%%)%n", 
+                System.out.printf("💸 %-25s $%,8.2f (%4.1f%%)%n", 
                     entry.getKey(), entry.getValue(), percentage);
             });
         
-        System.out.println("═".repeat(50));
-        System.out.printf("💹 %-20s $%,8.2f (100.0%%)%n", "TOTAL", total);
+        System.out.println("═".repeat(55));
+        System.out.printf("💹 %-25s $%,8.2f (100.0%%)%n", "TOTAL", total);
     }
     
     public void yearToDateSummary() {
-        System.out.println("\n📊 === YEAR-TO-DATE SUMMARY ===");
+        DisplayUtils.printCenteredSection("YEAR-TO-DATE SUMMARY");
         
         int year = LocalDate.now().getYear();
         LocalDate startOfYear = LocalDate.of(year, 1, 1);
@@ -323,26 +328,29 @@ public class ViewHandlers {
             .mapToDouble(Transaction::getAmount)
             .sum();
         
-        System.out.println("\n╔══════════════════════════════════════════╗");
-        System.out.printf("║         %d YEAR-TO-DATE SUMMARY         ║%n", year);
-        System.out.println("╠══════════════════════════════════════════╣");
+        // Create YTD summary box
+        String ytdTitle = year + " YEAR-TO-DATE SUMMARY";
+        int maxWidth = Math.max(ytdTitle.length() + 4, 50);
+        System.out.println("\n╔" + "═".repeat(maxWidth - 2) + "╗");
+        System.out.println("║" + DisplayUtils.centerText(ytdTitle, maxWidth - 2) + "║");
+        System.out.println("╠" + "═".repeat(maxWidth - 2) + "╣");
         System.out.printf("║ 💰 YTD Income:        $%,15.2f ║%n", ytdIncome);
         System.out.printf("║ 💸 YTD Expenses:      $%,15.2f ║%n", ytdExpenses);
         System.out.printf("║ 💹 YTD Net Savings:   $%,15.2f ║%n", ytdIncome - ytdExpenses);
         System.out.printf("║ 📊 Total Transactions: %,15d ║%n", ytdTransactions.size());
-        System.out.println("╚══════════════════════════════════════════╝");
+        System.out.println("╚" + "═".repeat(maxWidth - 2) + "╝");
         
         double dailyAvgIncome = ytdIncome / today.getDayOfYear();
         double dailyAvgExpense = ytdExpenses / today.getDayOfYear();
         
         System.out.printf("%n📈 Daily Averages:%n");
-        System.out.printf("💰 Average Daily Income:  $%,8.2f%n", dailyAvgIncome);
-        System.out.printf("💸 Average Daily Expense: $%,8.2f%n", dailyAvgExpense);
-        System.out.printf("💹 Average Daily Savings: $%,8.2f%n", dailyAvgIncome - dailyAvgExpense);
+        System.out.printf("💰 Average Daily Income:  $%,10.2f%n", dailyAvgIncome);
+        System.out.printf("💸 Average Daily Expense: $%,10.2f%n", dailyAvgExpense);
+        System.out.printf("💹 Average Daily Savings: $%,10.2f%n", dailyAvgIncome - dailyAvgExpense);
     }
     
     public void spendingInsights() {
-        System.out.println("\n💡 === SPENDING INSIGHTS ===");
+        DisplayUtils.printCenteredSection("SPENDING INSIGHTS");
         
         LocalDate oneMonthAgo = LocalDate.now().minusMonths(1);
         LocalDate today = LocalDate.now();
@@ -368,7 +376,7 @@ public class ViewHandlers {
             .count();
         
         System.out.println("\n💡 Recent Insights (Last 30 days):");
-        System.out.println("═".repeat(45));
+        System.out.println("═".repeat(50));
         System.out.printf("📊 Total Transactions: %d%n", recentTransactions.size());
         System.out.printf("💸 Expense Transactions: %d (%.1f%%)%n", 
             expenseCount, (expenseCount * 100.0) / recentTransactions.size());

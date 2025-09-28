@@ -98,7 +98,7 @@ public class RecurringExpense extends Expense {
             return;
         }
         
-        LocalDate current = nextDueDate != null ? nextDueDate : startDate;
+        LocalDate current = startDate;
         
         switch (frequency) {
             case DAILY:

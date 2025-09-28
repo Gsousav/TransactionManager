@@ -12,48 +12,48 @@ public class ManagementHandlers {
     }
     
     public void addNewCategory() {
-        System.out.println("\n🏷️ === ADD NEW CATEGORY ===");
+        System.out.println("\n[CATEGORY] === ADD NEW CATEGORY ===");
         
-        System.out.println("1. 💰 Add Income Category");
-        System.out.println("2. 💸 Add Expense Category");
+        System.out.println("1. [INCOME] Add Income Category");
+        System.out.println("2. [EXPENSE] Add Expense Category");
         
-        int choice = UserInputHandler.getIntInput("➤ Enter choice: ");
-        String categoryName = UserInputHandler.getStringInput("🏷️ Enter new category name: ");
+        int choice = UserInputHandler.getIntInput(">> Enter choice: ");
+        String categoryName = UserInputHandler.getStringInput("[CATEGORY] Enter new category name: ");
         
         if (categoryName.isEmpty()) {
-            System.out.println("❌ Category name cannot be empty.");
+            System.out.println("[ERROR] Category name cannot be empty.");
             return;
         }
         
         switch (choice) {
             case 1:
                 Income.addIncomeCategory(categoryName);
-                System.out.printf("✅ Income category '%s' added successfully!%n", categoryName);
+                System.out.printf("[SUCCESS] Income category '%s' added successfully!%n", categoryName);
                 break;
             case 2:
                 Expense.addExpenseCategory(categoryName);
-                System.out.printf("✅ Expense category '%s' added successfully!%n", categoryName);
+                System.out.printf("[SUCCESS] Expense category '%s' added successfully!%n", categoryName);
                 break;
             default:
-                System.out.println("❌ Invalid choice.");
+                System.out.println("[ERROR] Invalid choice.");
         }
     }
     
     public void createBackup() {
-        System.out.println("\n💾 === CREATE BACKUP ===");
+        System.out.println("\n[BACKUP] === CREATE BACKUP ===");
         
         transactionManager.createBackup();
-        System.out.println("✅ Backup created successfully!");
+        System.out.println("[SUCCESS] Backup created successfully!");
     }
     
     public void showDataLocation() {
-        System.out.println("\n📁 === DATA LOCATION ===");
-        System.out.println("📁 Your data is stored at:");
+        System.out.println("\n[LOCATION] === DATA LOCATION ===");
+        System.out.println("[LOCATION] Your data is stored at:");
         System.out.println("   " + transactionManager.getStorageLocation());
-        System.out.println("\n💡 This location contains:");
-        System.out.println("   📄 transactions.json - All your transaction data");
-        System.out.println("   📄 categories.json - Your custom categories");
-        System.out.println("   📁 backups/ - Backup files");
+        System.out.println("\n[INFO] This location contains:");
+        System.out.println("   [FILE] transactions.json - All your transaction data");
+        System.out.println("   [FILE] categories.json - Your custom categories");
+        System.out.println("   [LOCATION] backups/ - Backup files");
     }
     
     public void printTransactionSummary() {

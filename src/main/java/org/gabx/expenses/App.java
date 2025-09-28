@@ -29,7 +29,7 @@ public class App {
         
         while (true) {
             MenuSystem.displayMainMenu();
-            int choice = UserInputHandler.getIntInput("➤ Enter your choice: ");
+            int choice = UserInputHandler.getIntInput(">> Enter your choice: ");
             
             switch (choice) {
                 case 1:
@@ -45,13 +45,13 @@ public class App {
                     managementSubmenu();
                     break;
                 case 5:
-                    System.out.println("\n💾 All data has been automatically saved!");
-                    System.out.println("📁 Data location: " + transactionManager.getStorageLocation());
-                    System.out.println("Thank you for using Transaction Tracker! 👋");
+                    System.out.println("\n[SAVE] All data has been automatically saved!");
+                    System.out.println("[LOCATION] Data location: " + transactionManager.getStorageLocation());
+                    System.out.println("Thank you for using Transaction Tracker!");
                     System.exit(0);
                     break;
                 default:
-                    System.out.println("❌ Invalid choice. Please try again.\n");
+                    System.out.println("[ERROR] Invalid choice. Please try again.\n");
             }
         }
     }
@@ -61,7 +61,7 @@ public class App {
         while (true) {
             MenuSystem.displayTransactionMenu();
             
-            int choice = UserInputHandler.getIntInput("➤ Enter your choice: ");
+            int choice = UserInputHandler.getIntInput(">> Enter your choice: ");
             
             switch (choice) {
                 case 1:
@@ -82,7 +82,7 @@ public class App {
                 case 6:
                     return;
                 default:
-                    System.out.println("❌ Invalid choice. Please try again.");
+                    System.out.println("[ERROR] Invalid choice. Please try again.");
             }
         }
     }
@@ -91,7 +91,7 @@ public class App {
         while (true) {
             MenuSystem.displayViewingMenu();
             
-            int choice = UserInputHandler.getIntInput("➤ Enter your choice: ");
+            int choice = UserInputHandler.getIntInput(">> Enter your choice: ");
             
             switch (choice) {
                 case 1:
@@ -118,7 +118,7 @@ public class App {
                 case 8:
                     return;
                 default:
-                    System.out.println("❌ Invalid choice. Please try again.");
+                    System.out.println("[ERROR] Invalid choice. Please try again.");
             }
         }
     }
@@ -127,7 +127,7 @@ public class App {
         while (true) {
             MenuSystem.displayReportsMenu();
             
-            int choice = UserInputHandler.getIntInput("➤ Enter your choice: ");
+            int choice = UserInputHandler.getIntInput(">> Enter your choice: ");
             
             switch (choice) {
                 case 1:
@@ -145,7 +145,7 @@ public class App {
                 case 5:
                     return;
                 default:
-                    System.out.println("❌ Invalid choice. Please try again.");
+                    System.out.println("[ERROR] Invalid choice. Please try again.");
             }
         }
     }
@@ -154,7 +154,7 @@ public class App {
         while (true) {
             MenuSystem.displayManagementMenu();
             
-            int choice = UserInputHandler.getIntInput("➤ Enter your choice: ");
+            int choice = UserInputHandler.getIntInput(">> Enter your choice: ");
             
             switch (choice) {
                 case 1:
@@ -172,7 +172,7 @@ public class App {
                 case 5:
                     return;
                 default:
-                    System.out.println("❌ Invalid choice. Please try again.");
+                    System.out.println("[ERROR] Invalid choice. Please try again.");
             }
         }
     }
@@ -181,7 +181,7 @@ public class App {
         while (true) {
             MenuSystem.displayRecurringExpenseMenu();
             
-            int choice = UserInputHandler.getIntInput("➤ Enter your choice: ");
+            int choice = UserInputHandler.getIntInput(">> Enter your choice: ");
             
             switch (choice) {
                 case 1:
@@ -214,29 +214,75 @@ public class App {
                 case 10:
                     return;
                 default:
-                    System.out.println("❌ Invalid choice. Please try again.");
+                    System.out.println("[ERROR] Invalid choice. Please try again.");
             }
         }
     }
     
     private static void processOverdueOnStartup() {
-        // Check if there are any overdue recurring expenses
+        // Check if there are any overdue recurring expenses that haven't been processed yet
         java.time.LocalDate today = java.time.LocalDate.now();
         var overdueExpenses = recurringExpenseManager.getRecurringExpensesDueBetween(
             java.time.LocalDate.of(2020, 1, 1), today.minusDays(1));
         
         if (!overdueExpenses.isEmpty()) {
-            System.out.println("\n⚠️ Found " + overdueExpenses.size() + " overdue recurring expense(s).");
-            System.out.println("Would you like to process them now? (This will generate regular expense transactions)");
+            // Check if any of these overdue expenses actually need processing
+            boolean hasUnprocessedExpenses = overdueExpenses.stream()
+                .anyMatch(re -> {
+                    // Check if there are any periods between nextDueDate and today that haven't been processed
+                    java.time.LocalDate current = re.getNextDueDate();
+                    while (!current.isAfter(today)) {
+                        if (!hasExpenseForRecurringAndDate(re.getId(), current)) {
+                            return true; // Found an unprocessed period
+                        }
+                        current = getNextDateForFrequency(current, re.getFrequency());
+                    }
+                    return false;
+                });
             
-            String choice = UserInputHandler.getStringInput("Process overdue expenses? (yes/no, default=yes): ");
-            if (!"no".equalsIgnoreCase(choice)) {
-                var generatedExpenses = recurringExpenseManager.processOverdueRecurringExpenses();
-                if (!generatedExpenses.isEmpty()) {
-                    System.out.printf("✅ Generated %d expense transactions from overdue recurring expenses.%n", 
-                        generatedExpenses.size());
+            if (hasUnprocessedExpenses) {
+                System.out.println("\n[WARNING] Found overdue recurring expense(s) that haven't been processed yet.");
+                System.out.println("Would you like to process them now? (This will generate regular expense transactions)");
+                
+                String choice = UserInputHandler.getStringInput("Process overdue expenses? (yes/no, default=yes): ");
+                if (!"no".equalsIgnoreCase(choice)) {
+                    var generatedExpenses = recurringExpenseManager.processOverdueRecurringExpenses();
+                    if (!generatedExpenses.isEmpty()) {
+                        System.out.printf("[SUCCESS] Generated %d expense transactions from overdue recurring expenses.%n", 
+                            generatedExpenses.size());
+                    } else {
+                        System.out.println("[INFO] All overdue recurring expenses have already been processed.");
+                    }
                 }
             }
+        }
+    }
+    
+    // Helper method to check if an expense exists for a recurring expense and date
+    private static boolean hasExpenseForRecurringAndDate(String recurringExpenseId, java.time.LocalDate date) {
+        return transactionManager.getAllTransactions().stream()
+            .filter(t -> t instanceof org.gabx.expenses.transactions.Expense)
+            .map(t -> (org.gabx.expenses.transactions.Expense) t)
+            .anyMatch(e -> recurringExpenseId.equals(e.getOriginalRecurringId()) && date.equals(e.getDate()));
+    }
+    
+    // Helper method to get next date for frequency
+    private static java.time.LocalDate getNextDateForFrequency(java.time.LocalDate date, org.gabx.expenses.transactions.RecurringExpense.Frequency frequency) {
+        switch (frequency) {
+            case DAILY:
+                return date.plusDays(1);
+            case WEEKLY:
+                return date.plusWeeks(1);
+            case FOUR_WEEKLY:
+                return date.plusWeeks(4);
+            case MONTHLY:
+                return date.plusMonths(1);
+            case QUARTERLY:
+                return date.plusMonths(3);
+            case YEARLY:
+                return date.plusYears(1);
+            default:
+                return date;
         }
     }
 }

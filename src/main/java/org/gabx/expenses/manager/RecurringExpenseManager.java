@@ -90,13 +90,16 @@ public class RecurringExpenseManager {
         List<RecurringExpense> dueExpenses = getRecurringExpensesDueOn(processDate);
         
         for (RecurringExpense recurringExpense : dueExpenses) {
-            Expense expense = recurringExpense.createExpenseInstance();
-            expense.setOriginalRecurringId(recurringExpense.getId());
-            transactionManager.addTransaction(expense);
-            generatedExpenses.add(expense);
-            
-            // Update the next due date
-            recurringExpense.updateNextDueDate();
+            // Check if an expense for this recurring expense and date already exists
+            if (!hasExpenseForRecurringAndDate(recurringExpense.getId(), processDate)) {
+                Expense expense = recurringExpense.createExpenseInstance();
+                expense.setOriginalRecurringId(recurringExpense.getId());
+                transactionManager.addTransaction(expense);
+                generatedExpenses.add(expense);
+                
+                // Update the next due date
+                recurringExpense.updateNextDueDate();
+            }
         }
         
         if (!generatedExpenses.isEmpty()) {
@@ -120,11 +123,14 @@ public class RecurringExpenseManager {
             // Generate expenses for each overdue period
             LocalDate current = recurringExpense.getNextDueDate();
             while (!current.isAfter(today)) {
-                Expense expense = recurringExpense.createExpenseInstance();
-                expense.setDate(current);
-                expense.setOriginalRecurringId(recurringExpense.getId());
-                transactionManager.addTransaction(expense);
-                generatedExpenses.add(expense);
+                // Check if an expense for this recurring expense and date already exists
+                if (!hasExpenseForRecurringAndDate(recurringExpense.getId(), current)) {
+                    Expense expense = recurringExpense.createExpenseInstance();
+                    expense.setDate(current);
+                    expense.setOriginalRecurringId(recurringExpense.getId());
+                    transactionManager.addTransaction(expense);
+                    generatedExpenses.add(expense);
+                }
                 
                 current = getNextDateForFrequency(current, recurringExpense.getFrequency());
             }
@@ -233,6 +239,14 @@ public class RecurringExpenseManager {
             default:
                 return date;
         }
+    }
+    
+    // Check if an expense already exists for a specific recurring expense and date
+    private boolean hasExpenseForRecurringAndDate(String recurringExpenseId, LocalDate date) {
+        return transactionManager.getAllTransactions().stream()
+            .filter(t -> t instanceof Expense)
+            .map(t -> (Expense) t)
+            .anyMatch(e -> recurringExpenseId.equals(e.getOriginalRecurringId()) && date.equals(e.getDate()));
     }
     
     // Save recurring expenses to persistence

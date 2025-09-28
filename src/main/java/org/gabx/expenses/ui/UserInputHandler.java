@@ -20,7 +20,7 @@ public class UserInputHandler {
                 }
                 return Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.out.println("❌ Please enter a valid number.");
+                System.out.println("[ERROR] Please enter a valid number.");
             }
         }
     }
@@ -31,7 +31,7 @@ public class UserInputHandler {
                 System.out.print(prompt);
                 return Double.parseDouble(scanner.nextLine());
             } catch (NumberFormatException e) {
-                System.out.println("❌ Please enter a valid amount.");
+                System.out.println("[ERROR] Please enter a valid amount.");
             }
         }
     }
@@ -48,7 +48,7 @@ public class UserInputHandler {
                 
                 return LocalDate.parse(input, DATE_FORMATTER);
             } catch (DateTimeParseException e) {
-                System.out.println("❌ Please enter date in format yyyy-MM-dd (e.g., 2024-01-15)");
+                System.out.println("[ERROR] Please enter date in format yyyy-MM-dd (e.g., 2024-01-15)");
             }
         }
     }
@@ -64,7 +64,7 @@ public class UserInputHandler {
                 if (num >= 1 && num <= categories.size()) {
                     return categories.get(num - 1);
                 } else {
-                    System.out.println("❌ Invalid number. Please try again.");
+                    System.out.println("[ERROR] Invalid number. Please try again.");
                     continue;
                 }
             } catch (NumberFormatException e) {
@@ -73,7 +73,7 @@ public class UserInputHandler {
                     return input;
                 } else {
                     // New category
-                    if (confirmAction("🆕 '" + input + "' is a new category. Add it? (y/N): ")) {
+                    if (confirmAction("[NEW] '" + input + "' is a new category. Add it? (y/N): ")) {
                         return input;
                     } else {
                         System.out.println("Please select an existing category or number.");

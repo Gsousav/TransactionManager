@@ -89,6 +89,20 @@ public class TransactionManager {
             .sum();
     }
     
+    public double getTotalIncome() {
+        return transactions.stream()
+            .filter(t -> t instanceof Income)
+            .mapToDouble(Transaction::getAmount)
+            .sum();
+    }
+    
+    public double getTotalExpenses() {
+        return transactions.stream()
+            .filter(t -> t instanceof Expense)
+            .mapToDouble(Transaction::getAmount)
+            .sum();
+    }
+    
     public Map<String, Double> getIncomeByCategory(int month, int year) {
         return transactions.stream()
             .filter(t -> t instanceof Income)

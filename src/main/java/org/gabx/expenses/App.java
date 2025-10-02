@@ -116,6 +116,9 @@ public class App {
                     recurringExpenseSubmenu();
                     break;
                 case 8:
+                    viewHandlers.viewLifetimeBalance();
+                    break;
+                case 9:
                     return;
                 default:
                     System.out.println("[ERROR] Invalid choice. Please try again.");

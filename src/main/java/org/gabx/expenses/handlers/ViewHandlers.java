@@ -398,4 +398,56 @@ public class ViewHandlers {
             System.out.printf("[BEST] Most Active Category: %s%n", mostFrequentCategory);
         }
     }
+    
+    public void viewLifetimeBalance() {
+        DisplayUtils.printCenteredSection("LIFETIME BALANCE");
+        
+        double totalIncome = transactionManager.getTotalIncome();
+        double totalExpenses = transactionManager.getTotalExpenses();
+        double lifetimeBalance = totalIncome - totalExpenses;
+        
+        // Create lifetime summary box
+        String lifetimeTitle = "LIFETIME FINANCIAL SUMMARY";
+        int maxWidth = Math.max(lifetimeTitle.length() + 4, 50);
+        System.out.println("\n+" + "=".repeat(maxWidth - 2) + "+");
+        System.out.println("|" + DisplayUtils.centerText(lifetimeTitle, maxWidth - 2) + "|");
+        System.out.println("+" + "=".repeat(maxWidth - 2) + "+");
+        System.out.printf("| [INCOME] Total Lifetime Income:  $%,15.2f |%n", totalIncome);
+        System.out.printf("| [EXPENSE] Total Lifetime Expenses: $%,15.2f |%n", totalExpenses);
+        System.out.println("+" + "=".repeat(maxWidth - 2) + "+");
+        System.out.printf("| [BALANCE] Lifetime Net Worth:     $%,15.2f |%n", lifetimeBalance);
+        System.out.println("+" + "=".repeat(maxWidth - 2) + "+");
+        
+        if (lifetimeBalance > 0) {
+            System.out.println("[SUCCESS] You have a positive net worth! [CELEBRATE]");
+        } else if (lifetimeBalance < 0) {
+            System.out.println("[WARNING] Your expenses exceed your income lifetime.");
+        } else {
+            System.out.println("[EVEN] You have broken even lifetime.");
+        }
+        
+        // Show transaction count
+        List<Transaction> allTransactions = transactionManager.getAllTransactions();
+        long incomeCount = allTransactions.stream().filter(t -> t instanceof Income).count();
+        long expenseCount = allTransactions.stream().filter(t -> t instanceof Expense).count();
+        
+        System.out.printf("%n[STATS] Transaction Summary:%n");
+        System.out.printf("[INCOME] Income Transactions: %,d%n", incomeCount);
+        System.out.printf("[EXPENSE] Expense Transactions: %,d%n", expenseCount);
+        System.out.printf("[STATS] Total Transactions: %,d%n", allTransactions.size());
+        
+        if (!allTransactions.isEmpty()) {
+            LocalDate earliest = allTransactions.stream()
+                .map(Transaction::getDate)
+                .min(LocalDate::compareTo)
+                .orElse(LocalDate.now());
+            LocalDate latest = allTransactions.stream()
+                .map(Transaction::getDate)
+                .max(LocalDate::compareTo)
+                .orElse(LocalDate.now());
+            System.out.printf("[DATE] Tracking Period: %s to %s%n", 
+                earliest.format(DateTimeFormatter.ofPattern("MMM dd, yyyy")),
+                latest.format(DateTimeFormatter.ofPattern("MMM dd, yyyy")));
+        }
+    }
 }

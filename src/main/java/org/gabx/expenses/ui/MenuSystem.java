@@ -26,7 +26,8 @@ public class MenuSystem {
         "5. [DATE] Transactions by Date Range",
         "6. [YEARLY] Yearly Overview",
         "7. [RECURRING] Recurring Expenses",
-        "8. [BACK] Back to Main Menu"
+        "8. [LIFETIME] Lifetime Balance",
+        "9. [BACK] Back to Main Menu"
     };
     
     private static final String[] REPORTS_MENU_ITEMS = {
